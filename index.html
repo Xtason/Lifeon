@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lifeon - Trung Nhan Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Khuôn SVG để cắt hình chữ L bo tròn -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <clipPath id="l-shape" clipPathUnits="objectBoundingBox">
+                <path d="M 0,0.1 
+                     C 0,0 0,0 0.1,0 
+                     L 0.9,0 
+                     C 1,0 1,0 1,0.1 
+                     L 1,0.9 
+                     C 1,1 1,1 0.9,1 
+                     L 0.38,1 
+                     Q 0.28,1 0.28,0.9 
+                     L 0.28,0.7 
+                     Q 0.28,0.6 0.15,0.6 
+                     L 0.08,0.6 
+                     Q 0,0.6 0,0.5 
+                     L 0,0.1 
+                     Z" />
+            </clipPath>
+        </defs>
+    </svg>
+
+    <!-- Biểu ngữ Chế độ Chỉnh sửa -->
+    <div id="editModeBanner" class="edit-banner">
+        <div class="banner-left" style="display: flex; align-items: center; gap: 20px;">
+            <span><i class="fa-solid fa-pen-nib"></i> <span class="mobile-hide">Chế độ chỉnh sửa</span></span>
+            <div class="zoom-control" id="zoomControl"
+                style="display: none; align-items: center; gap: 15px; background: rgba(255,255,255,0.1); padding: 5px 20px; border-radius: 20px;">
+                <small style="opacity: 0.8;">Zoom:</small>
+                <input type="range" id="hero-zoom" min="1" max="1.5" step="0.01" value="1"
+                    oninput="updateHeroZoom(this.value)" style="cursor: pointer;">
+                <button onclick="document.getElementById('file-input-hero').click()"
+                    style="background: #3498db; color: white; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                    <i class="fa-solid fa-image"></i> <span class="mobile-hide">Đổi ảnh bìa</span>
+                </button>
+                <button onclick="document.getElementById('file-input-bg').click()"
+                    style="background: #9b59b6; color: white; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: 5px;">
+                    <i class="fa-solid fa-wallpaper"></i> <span class="mobile-hide">Đổi nền toàn trang</span>
+                </button>
+                <input type="file" id="file-input-bg" hidden accept="image/*" onchange="changeBodyBackground(this)">
+            </div>
+        </div>
+        <button class="btn-finish" onclick="toggleEditMode()"><i class="fa-solid fa-check"></i> <span
+                class="mobile-hide">Hoàn tất & Lưu</span></button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i></a>
+            <a href="#" class="nav-item" onclick="showComingSoon(event)"><i class="fa-regular fa-star"></i></a>
+            <a href="#" class="nav-item" onclick="showComingSoon(event)"><i class="fa-solid fa-camera"></i></a>
+            <div class="profile-pic-container">
+                <div class="profile-pic" onclick="handleAvatarClick()">
+                    <img id="display-profile-pic" src="https://i.pravatar.cc/150?u=trungnhan" alt="Profile" />
+                    <div class="edit-overlay-live"><span>Thay ảnh mới?</span></div>
+                </div>
+                <input type="file" id="file-input-avatar" hidden accept="image/*"
+                    onchange="previewImage(this, 'display-profile-pic')">
+            </div>
+            <a href="#" class="nav-item" onclick="showComingSoon(event)"><i class="fa-solid fa-briefcase"></i></a>
+            <a href="#" class="nav-item" onclick="showComingSoon(event)"><i class="fa-solid fa-chart-simple"></i></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="footer-icons">
+                <!-- Nút Dấu cộng (+) cho Mobile -->
+                <div class="mobile-plus-btn" onclick="toggleMobileExtraMenu(event)">
+                    <i class="fa-solid fa-plus" id="plusIcon"></i>
+                </div>
+
+                <!-- Menu phụ sổ lên -->
+                <div class="mobile-extra-menu" id="mobileExtraMenu">
+                    <a href="#" class="nav-item chat-btn" onclick="showComingSoon(event)"><i
+                            class="fa-solid fa-comment-dots"></i></a>
+                    <div class="menu-footer" onclick="toggleThemePicker()">
+                        <i class="fa-solid fa-grip"></i>
+                        <!-- Thanh chọn màu sổ ngang -->
+                        <div class="theme-picker" id="themePicker">
+                            <div class="color-dot color-default" onclick="setTheme('#2c3e50', event)" title="Classic">
+                            </div>
+                            <div class="color-dot color-forest" onclick="setTheme('#27ae60', event)" title="Forest">
+                            </div>
+                            <div class="color-dot color-sunset" onclick="setTheme('#e67e22', event)" title="Sunset">
+                            </div>
+                            <div class="color-dot color-ocean" onclick="setTheme('#2980b9', event)" title="Ocean"></div>
+                            <div class="color-dot color-berry" onclick="setTheme('#8e44ad', event)" title="Berry"></div>
+                            <div class="color-dot color-rose" onclick="setTheme('#e84393', event)" title="Rose"></div>
+                            <div class="color-dot color-crimson" onclick="setTheme('#c0392b', event)" title="Crimson">
+                            </div>
+                            <div class="color-dot color-teal" onclick="setTheme('#16a085', event)" title="Teal"></div>
+                            <div class="color-dot color-gold" onclick="setTheme('#f1c40f', event)" title="Gold"></div>
+                            <div class="color-dot color-royal" onclick="setTheme('#4a69bd', event)" title="Royal"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Stats Bar -->
+            <div class="top-stats">
+                <div class="stat-pill"><i class="fa-solid fa-heart"></i> 36k</div>
+                <div class="stat-pill">
+                    <i class="fa-solid fa-paper-plane"></i> 67k
+                </div>
+                <div class="stat-pill"><i class="fa-solid fa-bell"></i></div>
+            </div>
+
+            <!-- Profile Hero -->
+            <section class="profile-hero">
+                <div class="custom-frame" id="hero-frame">
+                    <img id="display-hero-image"
+                        src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=2043&auto=format&fit=crop"
+                        alt="Hero" class="hero-image" />
+
+                    <!-- Lưới căn chỉnh chuyên nghiệp -->
+                    <div class="alignment-grid">
+                        <div class="grid-line v1"></div>
+                        <div class="grid-line v2"></div>
+                        <div class="grid-line h1"></div>
+                        <div class="grid-line h2"></div>
+                    </div>
+
+                    <div class="edit-overlay-live" id="hero-overlay-text">
+                        <span>Thay ảnh bìa mới?</span>
+                    </div>
+                    <input type="file" id="file-input-hero" hidden accept="image/*"
+                        onchange="previewImage(this, 'display-hero-image')">
+                </div>
+
+                <!-- Floating Info Overlay (Khôi phục lại phần bị mất) -->
+                <div class="info-overlay">
+                    <div class="left-pills">
+                        <div class="status-pill-custom dark">
+                            <span id="display-status-tag-1" class="editable-text">XTABOY</span>
+                            <div class="toggle-switch"></div>
+                        </div>
+                        <div class="status-pill-custom light">
+                            <div class="active-indicator"></div>
+                            <span id="display-status-tag-2" class="editable-text">TRUNG NHAN</span>
+                        </div>
+                        <div class="birthday-card-v2">
+                            <div class="birthday-inner">
+                                <span id="display-birthday-label" class="b-label editable-text">Birthday</span>
+                                <div class="b-main">
+                                    <span id="display-birthday-day" class="b-day editable-text">18</span>
+                                    <div class="b-details">
+                                        <div id="display-birthday-month" class="month-pill editable-text">May <span
+                                                class="circle">2</span></div>
+                                        <span id="display-birthday-year" class="b-year editable-text">2 0 0 7</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Name Card -->
+                    <div class="name-card">
+                        <div class="name-title">
+                            <h1 class="script-font">
+                                <span id="display-firstname">Trung</span> <span class="rocket"
+                                    contenteditable="false">🚀</span>
+                            </h1>
+                            <h1 class="script-font"><span id="display-lastname">Nhan</span> <span class="planet"
+                                    contenteditable="false">🪐</span></h1>
+                        </div>
+                        <div class="hero-stats-row">
+                            <div class="stat-group">
+                                <i class="fa-solid fa-eye"></i> <span id="display-stat-1">36k</span>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-group">
+                                <i class="fa-solid fa-star"></i> <span id="display-stat-2">67k</span>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-group">
+                                <i class="fa-solid fa-bookmark"></i> <span id="display-stat-3">12k</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Widgets -->
+        <aside class="widgets">
+            <header class="widgets-header">
+                <div class="location">
+                    <span id="display-location-label" class="label editable-text">Hometown</span>
+                    <span class="value"><i class="fa-solid fa-location-dot"></i> <span id="display-location"
+                            class="editable-text">S.California</span></span>
+                </div>
+                <div class="tags">
+                    <span id="display-tag-1" class="tag editable-text">DESIGN</span>
+                    <span id="display-tag-2" class="tag editable-text">GRAPHICS</span>
+                    <span id="display-tag-3" class="tag editable-text">RAUMA</span>
+                </div>
+            </header>
+
+            <!-- Music Player -->
+            <div class="music-player">
+                <div class="player-inner">
+                    <div class="player-visual" id="player-visual"></div>
+                    <div class="player-controls">
+                        <div class="song-details">
+                            <h4 class="song-name" id="display-song">Forest Whisper</h4>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 0%"></div>
+                        </div>
+                        <div class="time-info">
+                            <span class="current-time">0:00</span>
+                            <span class="total-time">0:00</span>
+                        </div>
+                        <div class="buttons">
+                            <button onclick="prevSong()"><i class="fa-solid fa-step-backward"></i></button>
+                            <button class="play-pause">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                            <button onclick="nextSong()"><i class="fa-solid fa-step-forward"></i></button>
+                        </div>
+                    </div>
+                    <div class="player-options" onclick="togglePlayerMenu(event)">
+                        <i class="fa-solid fa-ellipsis"></i>
+                        <div class="player-submenu" id="playerSubmenu">
+                            <div class="submenu-item" onclick="openPlaylist()"><i
+                                    class="fa-solid fa-magnifying-glass"></i> Tìm nhạc</div>
+                            <div class="submenu-item" onclick="showComingSoon(event)"><i class="fa-solid fa-plus"></i> Thêm nhạc</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Audio Element -->
+                <audio id="mainAudio" src=""></audio>
+            </div>
+            <!-- Activity Widget (Clock & Mood) -->
+            <div class="activity-widget">
+                <div class="activity-inner">
+                    <div class="top-row">
+                        <div class="time-section">
+                            <span class="digital-clock" id="clock-time">00:00</span>
+                            <span class="date-text" id="clock-date">Loading...</span>
+                        </div>
+
+                        <!-- Mood Selector -->
+                        <div class="mood-card">
+                            <div class="mood-display">
+                                <i class="fa-regular fa-face-smile" id="mood-icon"></i>
+                                <span id="mood-text">HAPPY</span>
+                            </div>
+                            <div class="mood-options">
+                                <button class="mood-btn active" onclick="setMood('happy', this)" title="Happy"><i
+                                        class="fa-regular fa-face-smile"></i></button>
+                                <button class="mood-btn" onclick="setMood('sad', this)" title="Sad"><i
+                                        class="fa-regular fa-face-sad-tear"></i></button>
+                                <button class="mood-btn" onclick="setMood('anxious', this)" title="Anxious"><i
+                                        class="fa-regular fa-face-grimace"></i></button>
+                                <button class="mood-btn" onclick="setMood('chill', this)" title="Chill"><i
+                                        class="fa-regular fa-face-laugh-beam"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 24-Hour Timeline Widget -->
+                    <div class="timeline-widget">
+                        <div class="timeline-bounds">
+                            <div class="timeline-track" id="timeline-track">
+                                <!-- JS sẽ render 24 vạch -->
+                            </div>
+                            <div class="timeline-indicator" id="timeline-indicator">
+                                <div class="indicator-pill">
+                                    <div class="indicator-icon"><i class="fa-solid fa-sun" id="timeline-icon"></i></div>
+                                    <div class="indicator-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="pulse"></div>
+                        <span id="display-status-message" class="editable-text">Available for new projects</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <script>
+        // 1. Cập nhật đồng hồ từng giây và Timeline
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const hoursStr = String(hours).padStart(2, '0');
+            const minutesStr = String(minutes).padStart(2, '0');
+            const timeEl = document.getElementById('clock-time');
+            const dateEl = document.getElementById('clock-date');
+
+            if (timeEl) timeEl.textContent = `${hoursStr}:${minutesStr}`;
+            if (dateEl) {
+                const options = { weekday: 'long', day: 'numeric', month: 'long' };
+                dateEl.textContent = now.toLocaleDateString('en-US', options);
+            }
+
+            // Timeline update
+            const totalMinutesInDay = 24 * 60;
+            const currentMinutes = hours * 60 + minutes + seconds / 60;
+            const percentage = (currentMinutes / totalMinutesInDay) * 100;
+
+            const indicator = document.getElementById('timeline-indicator');
+            const icon = document.getElementById('timeline-icon');
+
+            if (indicator) {
+                indicator.style.left = `${percentage}%`;
+            }
+
+            if (icon) {
+                if (hours >= 6 && hours < 18) {
+                    icon.className = 'fa-solid fa-sun';
+                    icon.style.color = '#f1c40f'; // Màu vàng mặt trời
+                } else {
+                    icon.className = 'fa-solid fa-moon';
+                    icon.style.color = '#f1f2f6'; // Màu trắng mặt trăng
+                }
+            }
+        }
+
+        function renderTimeline() {
+            const track = document.getElementById('timeline-track');
+            if (!track) return;
+            track.innerHTML = '';
+            // Render 24 vạch (từ 0 đến 24)
+            for (let i = 0; i <= 24; i++) {
+                const tick = document.createElement('div');
+                tick.className = 'tick ' + (i % 6 === 0 ? 'major' : 'minor');
+
+                if (i % 6 === 0) {
+                    const label = document.createElement('span');
+                    label.className = 'tick-label';
+                    label.textContent = i;
+                    tick.appendChild(label);
+                }
+                track.appendChild(tick);
+            }
+        }
+
+        renderTimeline();
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. Xử lý chọn Mood thông minh
+        function setMood(mood, element) {
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+            if (element) {
+                element.classList.add('active');
+            } else {
+                // Nếu gọi từ load, tìm nút tương ứng
+                const btn = Array.from(document.querySelectorAll('.mood-btn')).find(b => b.title.toLowerCase() === mood.toLowerCase());
+                if (btn) btn.classList.add('active');
+            }
+
+            const label = document.getElementById('mood-text');
+            if (label) label.textContent = mood === 'chill' ? 'CHILLING' : mood.toUpperCase();
+
+            const mainIcon = document.getElementById('mood-icon');
+            if (mainIcon) {
+                const iconSource = element ? element.querySelector('i').className : document.querySelector(`.mood-btn[title="${mood.charAt(0).toUpperCase() + mood.slice(1)}"] i`)?.className;
+                if (iconSource) mainIcon.className = iconSource;
+
+                if (element) {
+                    mainIcon.style.transform = 'scale(1.2)';
+                    setTimeout(() => { mainIcon.style.transform = 'scale(1)'; }, 200);
+                    saveProfileData();
+                }
+            }
+        }
+
+        // 3. Xử lý Theme Picker (Sổ ngang màu)
+        function toggleThemePicker() {
+            const picker = document.getElementById('themePicker');
+            picker.classList.toggle('show');
+        }
+
+        function setTheme(color, event) {
+            // Ngăn chặn sự kiện nổi bọt để không làm đóng picker ngay lập tức
+            if (event) event.stopPropagation();
+
+            // Cập nhật biến CSS chính
+            document.documentElement.style.setProperty('--accent-color', color);
+
+            // Tạo màu light nhạt hơn cho các thẻ tag
+            let rgbaColor = color;
+            if (color.startsWith('rgb')) {
+                rgbaColor = color.replace('rgb', 'rgba').replace(')', ', 0.15)');
+            } else if (color.startsWith('#') && color.length === 7) {
+                rgbaColor = color + '26'; // Thêm độ mờ 15% cho mã hex
+            } else {
+                rgbaColor = color.replace('rgb', 'rgba').replace(')', ', 0.15)');
+            }
+            document.documentElement.style.setProperty('--accent-light', rgbaColor);
+
+            // Lưu màu vào localStorage
+            localStorage.setItem('lifeon_theme_color', color);
+
+            // Đóng picker sau khi chọn
+            setTimeout(() => {
+                const picker = document.getElementById('themePicker');
+                if (picker) picker.classList.remove('show');
+            }, 300);
+        }
+
+        // Đóng picker khi click ra ngoài
+        window.onclick = function (event) {
+            if (!event.target.matches('.menu-footer') && !event.target.matches('.fa-grip')) {
+                const picker = document.getElementById('themePicker');
+                if (picker && picker.classList.contains('show')) {
+                    picker.classList.remove('show');
+                }
+            }
+        }
+
+        // 4. Chế độ Biên tập Trực tiếp (Live Editing)
+        let isEditMode = false;
+
+        let confirmAction = null;
+
+        function handleAvatarClick() {
+            if (!isEditMode) {
+                document.getElementById('confirmModal').classList.add('show');
+                confirmAction = () => {
+                    toggleEditMode();
+                };
+            } else {
+                document.getElementById('file-input-avatar').click();
+            }
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+            confirmAction = null;
+        }
+
+        function acceptConfirmModal() {
+            const action = confirmAction;
+            closeConfirmModal();
+            if (action) action();
+        }
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const body = document.body;
+            const zoomCtrl = document.getElementById('zoomControl');
+
+            if (isEditMode) {
+                body.classList.add('edit-mode-active');
+                if (zoomCtrl) zoomCtrl.style.display = 'flex';
+
+                // Bật chỉnh sửa cho tất cả phần tử có class editable-text
+                document.querySelectorAll('.editable-text').forEach(el => {
+                    el.contentEditable = "true";
+                });
+
+                // Bật chỉnh sửa cho các ID cụ thể không có class editable-text (nếu có)
+                const specialIds = ['display-firstname', 'display-lastname', 'display-song', 'display-artist', 'display-stat-1', 'display-stat-2', 'display-stat-3'];
+                specialIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.contentEditable = "true";
+                });
+
+                // Thêm sự kiện auto-save khi mất focus
+                document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                    if (!el.dataset.autosaveAdded) {
+                        el.addEventListener('blur', saveProfileData);
+                        el.dataset.autosaveAdded = "true";
+                    }
+                });
+
+            } else {
+                body.classList.remove('edit-mode-active');
+                if (zoomCtrl) zoomCtrl.style.display = 'none';
+
+                // Khóa chỉnh sửa
+                document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                    el.contentEditable = "false";
+                });
+
+                saveProfileData();
+                alert('Đã lưu tất cả thay đổi!');
+            }
+        }
+
+        function saveProfileData() {
+            try {
+                const saved = localStorage.getItem('lifeon_profile_data');
+                const data = saved ? JSON.parse(saved) : {};
+
+                // Lưu tất cả các phần tử có ID (bao gồm cả editable-text và các id display-*)
+                const editableElements = document.querySelectorAll('[id^="display-"]');
+                editableElements.forEach(el => {
+                    data[el.id] = el.innerHTML;
+                });
+
+                const hero = document.getElementById('display-hero-image');
+                if (hero) {
+                    data['hero-src'] = hero.src;
+                    data['hero-transform'] = hero.style.transform;
+                }
+                const avatar = document.getElementById('display-profile-pic');
+                if (avatar) {
+                    data['avatar-src'] = avatar.src;
+                    data['avatar-transform'] = avatar.style.transform;
+                }
+
+                // Lưu Mood
+                const activeMoodBtn = document.querySelector('.mood-btn.active');
+                if (activeMoodBtn) data['mood'] = activeMoodBtn.title.toLowerCase();
+
+                // Lưu theme hiện tại luôn vào object data cho chắc chắn
+                const savedTheme = localStorage.getItem('lifeon_theme_color');
+                if (savedTheme) data['theme-color'] = savedTheme;
+
+                localStorage.setItem('lifeon_profile_data', JSON.stringify(data));
+                console.log("Data saved automatically");
+            } catch (e) {
+                console.warn("Could not save to localStorage. Image might be too large.", e);
+            }
+        }
+
+        function loadProfileData() {
+            try {
+                const saved = localStorage.getItem('lifeon_profile_data');
+                if (saved) {
+                    const dataObj = JSON.parse(saved);
+
+                    // Khôi phục tất cả dữ liệu theo ID
+                    Object.keys(dataObj).forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && id.startsWith('display-') && !id.includes('image') && !id.includes('pic')) {
+                            el.innerHTML = dataObj[id];
+                        }
+                    });
+
+                    const hero = document.getElementById('display-hero-image');
+                    if (hero && dataObj['hero-src']) {
+                        hero.src = dataObj['hero-src'];
+                        document.getElementById('hero-frame').classList.add('has-image');
+                    }
+                    if (hero && dataObj['hero-transform']) {
+                        hero.style.transform = dataObj['hero-transform'];
+                    }
+
+                    const avatar = document.getElementById('display-profile-pic');
+                    if (avatar && dataObj['avatar-src']) avatar.src = dataObj['avatar-src'];
+                    if (avatar && dataObj['avatar-transform']) avatar.style.transform = dataObj['avatar-transform'];
+
+                    if (dataObj['body-bg-src']) {
+                        const bgUrl = `url(${dataObj['body-bg-src']})`;
+                        document.body.style.backgroundImage = bgUrl;
+                        const playerVisual = document.getElementById('player-visual');
+                        if (playerVisual) playerVisual.style.backgroundImage = bgUrl;
+                    }
+
+                    if (dataObj['mood']) {
+                        setMood(dataObj['mood'], null);
+                    }
+                }
+
+                // Load theme
+                const savedTheme = localStorage.getItem('lifeon_theme_color') || (saved && JSON.parse(saved)['theme-color']);
+                if (savedTheme) {
+                    setTheme(savedTheme, null);
+                }
+            } catch (e) {
+                console.error("Error loading data", e);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadProfileData);
+
+        // --- Hệ thống Căn chỉnh ảnh (Pan & Zoom System) ---
+        let isDragging = false;
+        let startX, startY;
+        let translateX = 0, translateY = 0;
+        let currentScale = 1;
+        let activeImg = null;
+
+        function updateTransform() {
+            if (activeImg) {
+                // Kết hợp Scale và Translate để vuốt tự do
+                activeImg.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+            }
+        }
+
+        function startDrag(e) {
+            if (!isEditMode) return;
+            let target = e.target;
+
+            // Nếu nhấn vào lớp phủ hoặc chữ trong lớp phủ, ta tìm đến tấm ảnh tương ứng
+            if (target.classList.contains('edit-overlay-live') || target.tagName === 'SPAN') {
+                const parent = target.closest('.profile-pic') || target.closest('.custom-frame');
+                if (parent) target = parent.querySelector('img');
+            }
+
+            if (target && (target.id === 'display-hero-image' || target.id === 'display-profile-pic')) {
+                isDragging = true;
+                activeImg = target;
+                activeImg.style.transition = 'none';
+
+                const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+                startX = clientX - translateX;
+                startY = clientY - translateY;
+
+                if (e.type === 'mousedown') e.preventDefault();
+            }
+        }
+
+        function dragMove(e) {
+            if (!isDragging || !activeImg) return;
+
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+            translateX = clientX - startX;
+            translateY = clientY - startY;
+
+            updateTransform();
+        }
+
+        function endDrag() {
+            if (activeImg) {
+                activeImg.style.cursor = 'grab';
+                activeImg.style.transition = 'transform 0.1s ease-out';
+                saveProfileData();
+            }
+            isDragging = false;
+        }
+
+        // Đăng ký sự kiện Chuột & Chạm
+        document.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', dragMove);
+        document.addEventListener('mouseup', endDrag);
+
+        document.addEventListener('touchstart', startDrag, { passive: false });
+        document.addEventListener('touchmove', dragMove, { passive: false });
+        document.addEventListener('touchend', endDrag);
+
+        function updateHeroZoom(val) {
+            currentScale = val;
+            activeImg = document.getElementById('display-hero-image');
+            updateTransform();
+        }
+
+        function previewImage(input, targetId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        // Giảm nhẹ kích thước để tránh tràn LocalStorage (Max 5MB)
+                        const targetWidth = targetId === 'display-hero-image' ? 1500 : 400;
+                        const targetHeight = targetId === 'display-hero-image' ? 1000 : 400;
+                        canvas.width = targetWidth;
+                        canvas.height = targetHeight;
+
+                        let sourceWidth = img.width;
+                        let sourceHeight = img.height;
+                        let sourceX = 0, sourceY = 0;
+                        const sourceAspect = sourceWidth / sourceHeight;
+                        const targetAspect = targetWidth / targetHeight;
+
+                        if (sourceAspect > targetAspect) {
+                            // Ảnh quá rộng (Landscape) -> Cắt hai bên, lấy ở giữa
+                            sourceWidth = img.height * targetAspect;
+                            sourceX = (img.width - sourceWidth) / 2;
+                        } else {
+                            // Ảnh quá cao (Portrait) -> Cắt trên dưới
+                            sourceHeight = img.width / targetAspect;
+                            const topBias = 0.15; // Ưu tiên lấy từ 15% tính từ đỉnh ảnh
+                            sourceY = (img.height - sourceHeight) * topBias;
+
+                            // Đảm bảo không bị vượt quá biên ảnh
+                            if (sourceY < 0) sourceY = 0;
+                        }
+
+                        ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, targetWidth, targetHeight);
+                        // Giảm chất lượng JPEG xuống 0.8 để tiết kiệm dung lượng lưu trữ
+                        const processedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                        const displayImg = document.getElementById(targetId);
+                        displayImg.src = processedDataUrl;
+
+                        // Đánh dấu đã có ảnh để ẩn lớp phủ chữ và hiện lưới
+                        if (targetId === 'display-hero-image') {
+                            document.getElementById('hero-frame').classList.add('has-image');
+                        }
+
+                        // Reset về vị trí trung tâm cho ảnh mới
+                        translateX = 0;
+                        translateY = 0;
+                        currentScale = 1;
+                        activeImg = displayImg;
+                        updateTransform();
+
+                        if (targetId === 'display-hero-image') {
+                            const zoomEl = document.getElementById('hero-zoom');
+                            if (zoomEl) zoomEl.value = 1;
+                        }
+
+                        saveProfileData();
+                    };
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function changeBodyBackground(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxWidth = 1920;
+                        const maxHeight = 1080;
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+                        document.body.style.backgroundImage = `url(${dataUrl})`;
+                        const playerVisual = document.getElementById('player-visual');
+                        if (playerVisual) {
+                            playerVisual.style.backgroundImage = `url(${dataUrl})`;
+                        }
+
+                        try {
+                            const saved = localStorage.getItem('lifeon_profile_data');
+                            const data = saved ? JSON.parse(saved) : {};
+                            data['body-bg-src'] = dataUrl;
+                            localStorage.setItem('lifeon_profile_data', JSON.stringify(data));
+                        } catch (err) {
+                            console.warn("Storage full", err);
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // --- Modal Logic ---
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+
+        function saveProfile() {
+            const picUrl = document.getElementById('input-pic').value;
+            const loc = document.getElementById('input-location').value;
+            const song = document.getElementById('input-song').value;
+            const artist = document.getElementById('input-artist').value;
+
+            if (picUrl) document.getElementById('display-profile-pic').src = picUrl;
+            if (loc) document.getElementById('display-location').innerText = loc;
+            if (song) document.getElementById('display-song').innerText = song;
+            if (artist) document.getElementById('display-artist').innerText = artist;
+
+            closeEditModal();
+        }
+        function toggleMobileExtraMenu(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('mobileExtraMenu');
+            const icon = document.getElementById('plusIcon');
+            menu.classList.toggle('show');
+            icon.classList.toggle('rotate');
+        }
+
+        // Đóng menu khi click ra ngoài
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('mobileExtraMenu');
+            const btn = document.querySelector('.mobile-plus-btn');
+            if (menu && menu.classList.contains('show') && !menu.contains(event.target) && !btn.contains(event.target)) {
+                menu.classList.remove('show');
+                document.getElementById('plusIcon').classList.remove('rotate');
+            }
+        });
+        function togglePlayerMenu(event) {
+            if (event) event.stopPropagation();
+            const submenu = document.getElementById('playerSubmenu');
+            submenu.classList.toggle('show');
+        }
+
+        // Đóng menu trình phát nhạc khi click ra ngoài
+        window.addEventListener('click', function (event) {
+            const submenu = document.getElementById('playerSubmenu');
+            if (submenu && submenu.classList.contains('show')) {
+                submenu.classList.remove('show');
+            }
+        });
+        function openPlaylist() {
+            const playlist = document.getElementById('playlistContainer');
+            const submenu = document.getElementById('playerSubmenu');
+
+            if (playlist) playlist.classList.add('show');
+            if (submenu) submenu.classList.remove('show');
+        }
+
+        function closePlaylist() {
+            const container = document.getElementById('playlistContainer');
+            container.classList.add('hiding');
+
+            // Đợi hiệu ứng kết thúc rồi mới ẩn hẳn (300ms khớp với CSS)
+            setTimeout(() => {
+                container.classList.remove('show');
+                container.classList.remove('hiding');
+            }, 300);
+        }
+
+        const audio = document.getElementById('mainAudio');
+        const playBtn = document.querySelector('.play-pause i');
+        const progressBar = document.querySelector('.progress');
+        const currentTimeDisplay = document.querySelector('.current-time');
+        const totalTimeDisplay = document.querySelector('.total-time');
+
+        // Danh sách bài hát phân loại theo thư mục thực tế
+        const songs = {
+            'vn': [
+                'file mp3/Nhạc Việt/Deep Sea - Binz x Thanh Nguyễn x Triple D.mp3',
+                'file mp3/Nhạc Việt/Don\'t Côi - RPT Orijinn x Ronboogz (Visualizer).mp3',
+                'file mp3/Nhạc Việt/Gia  “1. muốn nhau”  from cơm áo gạo vàng EP  Official Visualizer.mp3',
+                'file mp3/Nhạc Việt/Hào  Có khóc cũng thế thôi (Official Visualizer).mp3',
+                'file mp3/Nhạc Việt/HẠ CÒN VƯƠNG NẮNG  DATKAA x KIDO x Prod. QT BEATZ [OFFICIAL MUSIC VIDEO].mp3',
+                'file mp3/Nhạc Việt/Là Mơ.mp3',
+                'file mp3/Nhạc Việt/PAR SG - whatever happens, happens ft. Saabirose (Lyrics Video)  EP LOVE.mp3',
+                'file mp3/Nhạc Việt/ĐI ĐÂU CHẲNG THẤY - SUMMER VEE (Prod.Lee)  Lyrics Video.mp3',
+                'file mp3/Nhạc Việt/Đó chẳng phải lý do nữa - Xám. x YenLe.mp3'
+            ],
+            'foreign': [
+                'file mp3/Nhạc nước ngoài/Dhruv - double take (Official Video).mp3',
+                'file mp3/Nhạc nước ngoài/Fasetya - Someone To You (feat. Shalom Margaret).mp3',
+                'file mp3/Nhạc nước ngoài/Powfu - death bed (coffee for your head) (Official Video) ft. beabadoobee.mp3',
+                'file mp3/Nhạc nước ngoài/The Weeknd, JENNIE, Lily-Rose Depp - One Of The Girls (Official Video).mp3',
+                'file mp3/Nhạc nước ngoài/sapientdream - Pastlives (lyrics).mp3'
+            ]
+        };
+
+        let currentCategory = 'foreign'; // Mặc định là nước ngoài
+        let currentSongIndex = 0;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            let mins = Math.floor(seconds / 60);
+            let secs = Math.floor(seconds % 60);
+            if (secs < 10) secs = '0' + secs;
+            return `${mins}:${secs}`;
+        }
+
+        function extractName(path) {
+            if (!path) return "Unknown Song";
+            let filename = path.split('/').pop();
+            return filename.replace('.mp3', '');
+        }
+
+        // Hàm chuyển đổi thể loại (Nhạc Việt / Nước Ngoài)
+        function switchCategory(category) {
+            currentCategory = category;
+
+            // Cập nhật giao diện Tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${category}`).classList.add('active');
+
+            // Xóa nội dung tìm kiếm khi chuyển tab
+            const searchInput = document.getElementById('songSearch');
+            if (searchInput) searchInput.value = '';
+
+            renderPlaylist();
+        }
+
+        function renderPlaylist(filter = '') {
+            const container = document.getElementById('playlistItems');
+            container.innerHTML = '';
+
+            const currentList = songs[currentCategory];
+            let hasResults = false;
+
+            currentList.forEach((url, index) => {
+                const songName = extractName(url);
+
+                // Lọc theo từ khóa tìm kiếm
+                if (filter && !songName.toLowerCase().includes(filter.toLowerCase())) {
+                    return;
+                }
+
+                hasResults = true;
+                const isActive = (audio.src.includes(encodeURI(url))) ? 'active' : '';
+
+                const item = document.createElement('div');
+                item.className = `playlist-item ${isActive}`;
+                item.onclick = () => playSong(url);
+                item.innerHTML = `
+                    <div class="p-info">
+                        <span class="p-name">${songName}</span>
+                    </div>
+                    <span class="p-time">--:--</span>
+                `;
+                container.appendChild(item);
+            });
+
+            if (!hasResults) {
+                container.innerHTML = '<div style="text-align:center; padding: 20px; opacity: 0.5;">Không tìm thấy bài hát</div>';
+            }
+        }
+
+        // Tự động tải bài hát đầu tiên khi trang web load
+        window.addEventListener('load', () => {
+            const firstSong = songs[currentCategory][0];
+            if (firstSong) {
+                const songName = extractName(firstSong);
+                document.getElementById('display-song').innerText = songName;
+                audio.src = encodeURI(firstSong);
+                audio.load();
+            }
+        });
+
+        function filterPlaylist() {
+            const searchTerm = document.getElementById('songSearch').value;
+            renderPlaylist(searchTerm);
+        }
+
+        // Khởi tạo danh sách lần đầu
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPlaylist();
+
+            // 1. Đồng bộ hóa Icon Play/Pause bằng sự kiện của Audio
+            audio.onplay = () => {
+                playBtn.className = 'fa-solid fa-pause';
+            };
+            audio.onpause = () => {
+                playBtn.className = 'fa-solid fa-play';
+            };
+
+            const playPauseBtn = document.querySelector('.play-pause');
+            if (playPauseBtn) {
+                playPauseBtn.onclick = togglePlayPause;
+            }
+
+            // 2. Xử lý thanh tiến trình (Progress Bar)
+            const progressBarContainer = document.querySelector('.progress-bar');
+            if (progressBarContainer) {
+                progressBarContainer.onclick = function (event) {
+                    if (isNaN(audio.duration)) return;
+                    const rect = this.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const width = rect.width;
+                    const percentage = x / width;
+                    audio.currentTime = percentage * audio.duration;
+                };
+            }
+
+            // Cập nhật thanh tiến trình và thời gian
+            audio.ontimeupdate = function () {
+                if (isNaN(audio.duration) || audio.duration === 0) return;
+
+                const progress = (audio.currentTime / audio.duration) * 100;
+                if (progressBar) progressBar.style.width = progress + '%';
+
+                const currentSec = Math.floor(audio.currentTime);
+                const durationSec = Math.floor(audio.duration);
+                const remainingSec = durationSec - currentSec;
+
+                if (currentTimeDisplay) currentTimeDisplay.innerText = formatTime(currentSec);
+                if (totalTimeDisplay && !isNaN(remainingSec) && remainingSec >= 0) {
+                    totalTimeDisplay.innerText = '-' + formatTime(remainingSec);
+                }
+            };
+
+            audio.onloadedmetadata = function () {
+                if (totalTimeDisplay) totalTimeDisplay.innerText = formatTime(audio.duration);
+            };
+
+            audio.onended = function () {
+                nextSong();
+            };
+        });
+
+        function togglePlayPause() {
+            if (audio.src === "" || audio.src.endsWith("/")) {
+                // Nếu chưa có bài hát nào được chọn, chọn bài đầu tiên
+                const firstSong = songs[currentCategory][0];
+                if (firstSong) playSong(firstSong);
+                return;
+            }
+
+            if (audio.paused) {
+                audio.play().catch(err => console.error("Play failed:", err));
+            } else {
+                audio.pause();
+            }
+        }
+
+        function playSong(fileUrl) {
+            if (!fileUrl) return;
+
+            const songName = extractName(fileUrl);
+            const displaySongEl = document.getElementById('display-song');
+            if (displaySongEl) displaySongEl.innerText = songName;
+
+            audio.src = encodeURI(fileUrl);
+            audio.load();
+
+            audio.play().then(() => {
+                // playBtn sẽ tự cập nhật qua sự kiện onplay
+            }).catch(error => {
+                console.error("Playback failed:", error);
+            });
+
+            // Tìm vị trí bài hát trong danh sách hiện tại
+            currentSongIndex = songs[currentCategory].indexOf(fileUrl);
+
+            // Vẽ lại list để cập nhật trạng thái active
+            renderPlaylist();
+        }
+
+        function nextSong() {
+            const currentList = songs[currentCategory];
+            if (!currentList || currentList.length === 0) return;
+            currentSongIndex++;
+            if (currentSongIndex >= currentList.length) currentSongIndex = 0;
+            playSong(currentList[currentSongIndex]);
+        }
+
+        function prevSong() {
+            const currentList = songs[currentCategory];
+            if (!currentList || currentList.length === 0) return;
+            currentSongIndex--;
+            if (currentSongIndex < 0) currentSongIndex = currentList.length - 1;
+            playSong(currentList[currentSongIndex]);
+        }
+    </script>
+    <!-- Modal Xác nhận (Confirm) -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 380px; text-align: center; padding: 40px 30px;">
+            <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 20px;">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <h2 style="margin-bottom: 15px; font-size: 1.5rem;">Bạn muốn chỉnh sửa hồ sơ?</h2>
+            <p style="opacity: 0.8; margin-bottom: 30px; font-size: 0.95rem; line-height: 1.5;">Bật chế độ chỉnh sửa để
+                có thể thay đổi ảnh đại diện, ảnh bìa và thông tin văn bản.</p>
+            <div class="modal-footer" style="margin-top: 0; display: flex; gap: 15px;">
+                <button class="btn-cancel" onclick="closeConfirmModal()" style="flex: 1;">Để sau</button>
+                <button class="btn-save" onclick="acceptConfirmModal()" style="flex: 1;">Chỉnh sửa ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chỉnh sửa hồ sơ -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Profile Image URL</label>
+                    <input type="text" id="input-pic" placeholder="Paste image URL here...">
+                </div>
+                <div class="input-group">
+                    <label>Hometown / Location</label>
+                    <input type="text" id="input-location" placeholder="e.g. S.California">
+                </div>
+                <div class="input-group">
+                    <label>Currently Listening (Song)</label>
+                    <input type="text" id="input-song" placeholder="Song title">
+                </div>
+                <div class="input-group">
+                    <label>Artist</label>
+                    <input type="text" id="input-artist" placeholder="Artist name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <!-- Playlist Area - Moved outside for better centering behavior -->
+    <div class="playlist-container" id="playlistContainer">
+        <div class="playlist-header">
+            <div class="playlist-title-row">
+                <span style="font-weight: 700; color: #333;">Danh sách phát</span>
+                <button class="close-playlist" onclick="closePlaylist()">&times;</button>
+            </div>
+            <div class="playlist-tabs">
+                <button class="tab-btn active" id="tab-foreign" onclick="switchCategory('foreign')">Nước Ngoài</button>
+                <button class="tab-btn" id="tab-vn" onclick="switchCategory('vn')">Nhạc Việt</button>
+            </div>
+            <div class="playlist-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="songSearch" placeholder="Tìm kiếm bài hát..." oninput="filterPlaylist()">
+            </div>
+        </div>
+        <div class="playlist-items" id="playlistItems">
+            <!-- Sẽ được render tự động bằng JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal Thông báo Hẹn gặp lại (Coming Soon) -->
+    <div id="comingSoonModal" class="modal-overlay">
+        <div class="modal-content"
+            style="max-width: 400px; text-align: center; padding: 45px 30px; border-radius: 40px; background: rgba(255,255,255,0.12); backdrop-filter: blur(25px);">
+            <div style="font-size: 4rem; margin-bottom: 25px; filter: drop-shadow(0 0 15px var(--accent-color));">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-color);"></i>
+            </div>
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.2rem; margin-bottom: 20px; color: #fff;">
+                Baby à...</h2>
+            <p
+                style="font-size: 1.1rem; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 35px; font-weight: 500;">
+                Em nghịch ngợm thật đấy, hãy chờ bản cập nhật mới nhất nhé bé cưng!
+            </p>
+            <button class="btn-save" onclick="closeComingSoon()"
+                style="width: 100%; padding: 15px; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase;">Chờ
+                xíu nhé</button>
+        </div>
+    </div>
+
+    <script>
+        function showComingSoon(event) {
+            if (event) event.preventDefault();
+            document.getElementById('comingSoonModal').classList.add('show');
+        }
+
+        function closeComingSoon() {
+            document.getElementById('comingSoonModal').classList.remove('show');
+        }
+    </script>
+</body>
+
+</html>
