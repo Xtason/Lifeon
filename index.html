@@ -556,6 +556,13 @@
 
         function loadProfileData() {
             try {
+                // Hệ thống cập nhật phiên bản: Nếu là bản cũ, xóa bộ nhớ đệm để hiện giao diện Lifeon mới
+                const APP_VERSION = "2.0"; 
+                if (localStorage.getItem('lifeon_version') !== APP_VERSION) {
+                    localStorage.removeItem('lifeon_profile_data');
+                    localStorage.setItem('lifeon_version', APP_VERSION);
+                }
+
                 const saved = localStorage.getItem('lifeon_profile_data');
                 if (saved) {
                     const dataObj = JSON.parse(saved);
