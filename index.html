@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Lifeon - Trung Nhan Portfolio</title>
-    
+
     <!-- PWA & App-like behavior -->
     <link rel="manifest" href="manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -139,9 +139,7 @@
             <!-- Profile Hero -->
             <section class="profile-hero">
                 <div class="custom-frame" id="hero-frame">
-                    <img id="display-hero-image"
-                        src="hero-default.png"
-                        alt="Hero" class="hero-image" />
+                    <img id="display-hero-image" src="hero-default.png" alt="Hero" class="hero-image" />
 
                     <!-- Lưới căn chỉnh chuyên nghiệp -->
                     <div class="alignment-grid">
@@ -167,7 +165,7 @@
                         </div>
                         <div class="status-pill-custom light">
                             <div class="active-indicator"></div>
-                            <span id="display-status-tag-2" class="editable-text">LIFEON USER</span>
+                            <span id="display-status-tag-2" class="editable-text">TRUNG NHAN</span>
                         </div>
                         <div class="birthday-card-v2">
                             <div class="birthday-inner">
@@ -188,10 +186,10 @@
                     <div class="name-card">
                         <div class="name-title">
                             <h1 class="script-font">
-                                <span id="display-firstname">Life</span> <span class="rocket"
+                                <span id="display-firstname">Nick</span> <span class="rocket"
                                     contenteditable="false">🚀</span>
                             </h1>
-                            <h1 class="script-font"><span id="display-lastname">on</span> <span class="planet"
+                            <h1 class="script-font"><span id="display-lastname">Name</span> <span class="planet"
                                     contenteditable="false">🪐</span></h1>
                         </div>
                         <div class="hero-stats-row">
@@ -216,9 +214,9 @@
         <aside class="widgets">
             <header class="widgets-header">
                 <div class="location">
-                    <span id="display-location-label" class="label editable-text">Location</span>
+                    <span id="display-location-label" class="label editable-text">Hometown</span>
                     <span class="value"><i class="fa-solid fa-location-dot"></i> <span id="display-location"
-                            class="editable-text">Planet Earth</span></span>
+                            class="editable-text">SAIGON</span></span>
                 </div>
                 <div class="tags">
                     <span id="display-tag-1" class="tag editable-text">DESIGN</span>
@@ -255,7 +253,8 @@
                         <div class="player-submenu" id="playerSubmenu">
                             <div class="submenu-item" onclick="openPlaylist()"><i
                                     class="fa-solid fa-magnifying-glass"></i> Tìm nhạc</div>
-                            <div class="submenu-item" onclick="showComingSoon(event)"><i class="fa-solid fa-plus"></i> Thêm nhạc</div>
+                            <div class="submenu-item" onclick="showComingSoon(event)"><i class="fa-solid fa-plus"></i>
+                                Thêm nhạc</div>
                         </div>
                     </div>
                 </div>
@@ -556,13 +555,6 @@
 
         function loadProfileData() {
             try {
-                // Hệ thống cập nhật phiên bản: Nếu là bản cũ, xóa bộ nhớ đệm để hiện giao diện Lifeon mới
-                const APP_VERSION = "2.0"; 
-                if (localStorage.getItem('lifeon_version') !== APP_VERSION) {
-                    localStorage.removeItem('lifeon_profile_data');
-                    localStorage.setItem('lifeon_version', APP_VERSION);
-                }
-
                 const saved = localStorage.getItem('lifeon_profile_data');
                 if (saved) {
                     const dataObj = JSON.parse(saved);

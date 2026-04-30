@@ -3,12 +3,16 @@
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none; /* Disable long-press menu on mobile */
-  user-select: none; /* Disable text selection for a more app-like feel */
+  -webkit-touch-callout: none;
+  /* Disable long-press menu on mobile */
+  user-select: none;
+  /* Disable text selection for a more app-like feel */
 }
 
 /* Allow text selection only where needed */
-[contenteditable="true"], input, textarea {
+[contenteditable="true"],
+input,
+textarea {
   user-select: text;
 }
 
@@ -444,7 +448,8 @@ body::before {
 
 .stat-pill i {
   color: var(--accent-color);
-  filter: brightness(1.2); /* Làm icon nổi bật hơn trên nền kính */
+  filter: brightness(1.2);
+  /* Làm icon nổi bật hơn trên nền kính */
 }
 
 .profile-hero {
@@ -1093,11 +1098,13 @@ body::before {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(25px);
   border-radius: 35px;
-  padding: 0; /* Changed to 0 to allow header/items to handle padding */
+  padding: 0;
+  /* Changed to 0 to allow header/items to handle padding */
   box-shadow: 0 50px 120px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.8);
   max-height: 80vh;
-  overflow: hidden; /* Header stays, items scroll */
+  overflow: hidden;
+  /* Header stays, items scroll */
   flex-direction: column;
 }
 
@@ -1115,6 +1122,7 @@ body::before {
     opacity: 0;
     transform: translate(-50%, -45%) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
@@ -1126,6 +1134,7 @@ body::before {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+
   to {
     opacity: 0;
     transform: translate(-50%, -45%) scale(0.95);
@@ -1146,7 +1155,8 @@ body::before {
 .playlist-items {
   padding: 10px 20px 25px 20px;
   overflow-y: auto;
-  max-height: calc(80vh - 160px); /* Subtract header height */
+  max-height: calc(80vh - 160px);
+  /* Subtract header height */
 }
 
 .playlist-title-row {
@@ -1645,7 +1655,8 @@ body::before {
   }
 
   .zoom-control input[type="range"] {
-    width: 50px !important; /* Thu ngắn thanh zoom */
+    width: 50px !important;
+    /* Thu ngắn thanh zoom */
   }
 
   .zoom-control button {
@@ -1656,7 +1667,8 @@ body::before {
     align-items: center !important;
     justify-content: center !important;
     border-radius: 50% !important;
-    font-size: 16px !important; /* Tăng kích thước icon */
+    font-size: 16px !important;
+    /* Tăng kích thước icon */
     line-height: 0 !important;
   }
 
@@ -2186,7 +2198,8 @@ body::before {
   .mobile-extra-menu {
     display: none !important;
     position: absolute !important;
-    left: 70px !important; /* Bật ra bên phải thanh sidebar */
+    left: 70px !important;
+    /* Bật ra bên phải thanh sidebar */
     bottom: 20px !important;
     background: rgba(255, 255, 255, 0.4) !important;
     backdrop-filter: blur(20px) !important;
@@ -2207,6 +2220,7 @@ body::before {
       opacity: 0;
       transform: translateX(-20px) scale(0.8);
     }
+
     to {
       opacity: 1;
       transform: translateX(0) scale(1);
@@ -2614,7 +2628,8 @@ body::before {
   }
 
   .playlist-title-row span {
-    display: none !important; /* Chỉ ẩn chữ "Danh sách phát" */
+    display: none !important;
+    /* Chỉ ẩn chữ "Danh sách phát" */
   }
 
   .close-playlist {
@@ -2666,7 +2681,8 @@ body::before {
   }
 
   .p-time {
-    display: none !important; /* Ẩn thời gian bài hát trên mobile landscape */
+    display: none !important;
+    /* Ẩn thời gian bài hát trên mobile landscape */
   }
 }
 
