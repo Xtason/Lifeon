@@ -3,6 +3,13 @@
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none; /* Disable long-press menu on mobile */
+  user-select: none; /* Disable text selection for a more app-like feel */
+}
+
+/* Allow text selection only where needed */
+[contenteditable="true"], input, textarea {
+  user-select: text;
 }
 
 :root {
@@ -18,13 +25,13 @@
   --inner-radius: 30px;
 
   /* Biến màu chủ đề (Sẽ thay đổi khi chọn màu) */
-  --accent-color: #2c3e50;
-  --accent-light: rgba(44, 62, 80, 0.15);
+  --accent-color: #3498db;
+  --accent-light: rgba(52, 152, 219, 0.15);
 
   /* Biến màu động từ hình nền */
-  --dynamic-accent: #2c3e50;
-  --dynamic-light: rgba(44, 62, 80, 0.2);
-  --dynamic-text: #34495e;
+  --dynamic-accent: #2980b9;
+  --dynamic-light: rgba(41, 128, 185, 0.2);
+  --dynamic-text: #2c3e50;
 
   /* Chế độ Biên tập Trực tiếp */
   --edit-banner-bg: rgba(0, 0, 0, 0.85);
@@ -227,8 +234,8 @@ body.edit-mode-active [contenteditable="true"] {
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
   background-color: #0a0a0b;
-  /* Giữ nguyên ảnh Rừng cây theo ý bạn */
-  background-image: url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2071&auto=format&fit=crop");
+  /* Mặc định là ảnh bầu trời xanh bạn thích */
+  background-image: url("bg-default.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1328,7 +1335,7 @@ body::before {
 .player-visual {
   width: 150px;
   height: 150px;
-  background: url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2071&auto=format&fit=crop");
+  background: url("bg-default.png");
   background-size: cover;
   background-position: center;
   border-radius: 12px;

@@ -3,8 +3,18 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Lifeon - Trung Nhan Portfolio</title>
+    
+    <!-- PWA & App-like behavior -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Lifeon" />
+    <meta name="theme-color" content="#2c3e50" />
+    <link rel="apple-touch-icon" href="icon-512.png" />
+
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -69,7 +79,7 @@
             <a href="#" class="nav-item" onclick="showComingSoon(event)"><i class="fa-solid fa-camera"></i></a>
             <div class="profile-pic-container">
                 <div class="profile-pic" onclick="handleAvatarClick()">
-                    <img id="display-profile-pic" src="https://i.pravatar.cc/150?u=trungnhan" alt="Profile" />
+                    <img id="display-profile-pic" src="avatar-default.png" alt="Profile" />
                     <div class="edit-overlay-live"><span>Thay ảnh mới?</span></div>
                 </div>
                 <input type="file" id="file-input-avatar" hidden accept="image/*"
@@ -130,7 +140,7 @@
             <section class="profile-hero">
                 <div class="custom-frame" id="hero-frame">
                     <img id="display-hero-image"
-                        src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=2043&auto=format&fit=crop"
+                        src="hero-default.png"
                         alt="Hero" class="hero-image" />
 
                     <!-- Lưới căn chỉnh chuyên nghiệp -->
@@ -178,10 +188,10 @@
                     <div class="name-card">
                         <div class="name-title">
                             <h1 class="script-font">
-                                <span id="display-firstname">Trung</span> <span class="rocket"
+                                <span id="display-firstname">Nick</span> <span class="rocket"
                                     contenteditable="false">🚀</span>
                             </h1>
-                            <h1 class="script-font"><span id="display-lastname">Nhan</span> <span class="planet"
+                            <h1 class="script-font"><span id="display-lastname">Name</span> <span class="planet"
                                     contenteditable="false">🪐</span></h1>
                         </div>
                         <div class="hero-stats-row">
@@ -208,7 +218,7 @@
                 <div class="location">
                     <span id="display-location-label" class="label editable-text">Hometown</span>
                     <span class="value"><i class="fa-solid fa-location-dot"></i> <span id="display-location"
-                            class="editable-text">S.California</span></span>
+                            class="editable-text">SAIGON</span></span>
                 </div>
                 <div class="tags">
                     <span id="display-tag-1" class="tag editable-text">DESIGN</span>
@@ -264,17 +274,17 @@
                         <!-- Mood Selector -->
                         <div class="mood-card">
                             <div class="mood-display">
-                                <i class="fa-regular fa-face-smile" id="mood-icon"></i>
-                                <span id="mood-text">HAPPY</span>
+                                <i class="fa-regular fa-face-laugh-beam" id="mood-icon"></i>
+                                <span id="mood-text">CHILLING</span>
                             </div>
                             <div class="mood-options">
-                                <button class="mood-btn active" onclick="setMood('happy', this)" title="Happy"><i
+                                <button class="mood-btn" onclick="setMood('happy', this)" title="Happy"><i
                                         class="fa-regular fa-face-smile"></i></button>
                                 <button class="mood-btn" onclick="setMood('sad', this)" title="Sad"><i
                                         class="fa-regular fa-face-sad-tear"></i></button>
                                 <button class="mood-btn" onclick="setMood('anxious', this)" title="Anxious"><i
                                         class="fa-regular fa-face-grimace"></i></button>
-                                <button class="mood-btn" onclick="setMood('chill', this)" title="Chill"><i
+                                <button class="mood-btn active" onclick="setMood('chill', this)" title="Chill"><i
                                         class="fa-regular fa-face-laugh-beam"></i></button>
                             </div>
                         </div>
